@@ -1,0 +1,71 @@
+# Welcome to Jekyll!
+#
+# This config file is meant for settings that affect your whole site, values
+# which you are expected to set up once and rarely edit after that. If you find
+# yourself editing these this file very often, consider using Jekyll's data files
+# feature for the data you need to update frequently.
+#
+# For technical reasons, this file is *NOT* reloaded automatically when you use
+# 'jekyll serve'. If you change this file, please restart the server process.
+
+# Site settings
+# These are used to personalize your new site. If you look in the HTML files,
+# you will see them accessed via {{ site.title }}, {{ site.github_repo }}, and so on.
+# You can create any custom variable you would like, and they will be accessible
+# in the templates via {{ site.myvariable }}.
+title: Programming Languages
+tagline: Programming Languages
+description: Course given by DCC-UFMG
+author: Haniel Barbosa
+baseurl: '/'
+url: 'https://hanielb.github.io'
+exclude: ["Gemfile", "Gemfile.lock", "LICENSE", "README.md"]
+
+# Theme settings
+remote_theme: pdmosses/just-the-docs@pages-and-collections
+color_scheme: light
+search_enabled: true
+heading_anchors: true
+permalink: pretty
+aux_links_new_tab: true
+footer_content: 'Haniel Barbosa &copy; 2021 <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a>'
+
+# Collections for website data
+collections:
+  modules:
+  lessons:
+    permalink: '/:path/'
+    output: true
+# Default layouts for each collection type
+defaults:
+  - scope:
+      path: ''
+      type: modules
+    values:
+      layout: module
+  - scope:
+      path: ''
+      type: lessons
+    values:
+      layout: page
+
+# Configure collections for Just the Docs
+just_the_docs:
+  collections:
+    lessons:
+      name: Notes
+      # order:
+      #   - _lessons/01-sml-intro/sml-intro.md
+      #   - _lessons/04-polymorphism/polymorphism.md
+
+compress_html:
+  clippings: all
+  comments: all
+  endings: all
+  startings: []
+  blanklines: false
+  profile: false
+
+plugins:
+  - jekyll-seo-tag
+  - jekyll-sitemap

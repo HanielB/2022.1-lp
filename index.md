@@ -19,7 +19,7 @@ seo:
 
 ---
 
-- Plano de ensino
+- [Plano de ensino](plan.pdf)
 - Instructor:
   - [Haniel Barbosa](https://homepages.dcc.ufmg.br/~hbarbosa/), Office 4323, DCC, hbarbosa@dcc.ufmg.br
 

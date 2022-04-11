@@ -13,7 +13,6 @@ title: Polymorphism
 
 - [Pre-recorded lecture](https://www.youtube.com/playlist?list=PLeIbBi3CwMZwmgIVh73e1zWAvMfxiuZkR)
 - Chapter 8 of the textbook
-- [Examples of polymorphism in C++ code](https://homepages.dcc.ufmg.br/~hbarbosa/teaching/ufmg/2020-1/lp/notes/05-polymorphism-c++.cpp)
 - [Introduction to Programming Languages, entries on polymorphism](https://en.wikibooks.org/wiki/Introduction_to_Programming_Languages)
 
 

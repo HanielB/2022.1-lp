@@ -83,6 +83,15 @@ toTriple 1 2.0 (L(1,L(3,E)));
 toTriple 1 2.0 (L(1,L(3,L(9,L(27,E)))));
 ```
 
+
+## Overloading in SML
+
+``` ocaml
+val a = 1 + 2;
+
+val b = 1.0 + 2.0;
+```
+
 ## Equality-testable types
 
 ``` ocaml
@@ -131,10 +140,37 @@ inlinedMax l2;
 fun max (a,b) = if a > b then a else b;
 ```
 
-## Overloading in SML
+## Examples of polymorphism in C++
 
-``` ocaml
-val a = 1 + 2;
+```c++
+#include <iostream>
 
-val b = 1.0 + 2.0;
+template <class X> X max(X a, X b)
+{
+  return a > b ? a : b;
+}
+
+class MyInt
+{
+  friend std::ostream& operator<<(std::ostream& os, const MyInt& m)
+  {
+    os << m.data;
+    return os;
+  }
+
+  friend bool operator>(MyInt& mi1, MyInt& mi2) { return mi1.data > mi2.data; }
+
+ public:
+  MyInt(int i) : data(i) {}
+
+ private:
+  const int data;
+};
+
+int main()
+{
+  std::cout << max<int>(5, 3) << std::endl;
+  std::cout << max<char>('a', 'b') << std::endl;
+  std::cout << max<MyInt>(MyInt(5), MyInt(3)) << std::endl;
+}
 ```

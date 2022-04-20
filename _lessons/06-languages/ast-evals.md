@@ -179,16 +179,10 @@ val e1 = Var "x";
 val e2 = Plus(IConst 17, e1);
 ```
 
-To evaluate expressions with variables we need to be able to associate them
-with values. To this we will need a notion of *state*, for example by means of an
-*association list*, i.e.
-
-``` ocaml
-lists of type ('a * 'b) list
-```
-
-which can be seen as maps/dictionaries with keys of type `'a` and values of type
-`'b`.
+To evaluate expressions with variables we need to be able to associate them with
+values. To this we will need a notion of *state*, for example by means of an
+*association list*, i.e., lists of type `('a * 'b) list`, which can be seen as
+maps/dictionaries with keys of type `'a` and values of type `'b`.
 
 By building such lists from variable identifiers (strings) to values (IConst i)
 we will be able to map variables to values and thus evaluate expressions with
@@ -225,4 +219,140 @@ eval e1 state;
 eval e2 state;
 ```
 
-How to extend the language to allow bulding a state *during* evaluation?
+How to extend the language to allow bulding a state *during* evaluation? We will see this when studying binding and scopes.
+
+## Evaluating expressions with free variables
+
+The free variables of an expression are the variables that occur *unbound*,
+i.e., without them being bound to a value in the given context. Expressions
+cannot be evaluated if they have free variables, since the value of the
+expression depends on these variables. However, if the state with which the
+expression is being evaluated contains valuations for these variables, the
+evaluation can be performed.
+
+Thus to evaluate an expression with free variables we need to start the
+evaluation function with a valuation to these variables.
+
+``` ocaml
+val e = Minus(Var "x", Var "y");
+val s = [("y", Plus(IConst 49, Plus(Var "x", Plus(IConst 3, Var "x"))))];
+eval e ([] @ s);
+eval e ([("x", IConst 0)] @ s);
+eval e ([("x", IConst 1)] @ s);
+```
+
+## Checking whether expressions are closed (no free variables)
+
+We will now determine whether expressions are *closed*, i.e., they do not
+contain free variables. Only closed expressions can be evaluated without an
+initial valuation. Since we have not yet seem how to define expressions that
+bind variables, we will use a definition of free variables modulo a given
+state. Variables are free if they are not defined in the state.
+
+To do this we will first define set operations in SML, then how to compute the
+set of free variables of an expression, then write a function that checks
+whether that set is empty, in which case the expression will be closed.
+
+### Finite sets in SML
+
+A set can be implemented as a list with no duplicate elements.
+
+- Set membership
+`isIn x s is true iff x occurs in s`
+``` ocaml
+fun isIn x s =
+    case s of
+        [] => false
+      | (h::t) => if x = h then true else isIn x t;
+```
+- Set union
+
+`(union s1 s2)` takes two lists representing sets and yields a list representing
+their union, i.e., a list without duplicates consisting of all the elements of
+`s1` and all the elements of `s2`.
+
+``` ocaml
+fun union s1 s2 =
+    case s1 of
+        [] => s2
+      | (h::t) => if isIn h s2 then union t s2 else union t (h::s2);
+```
+- Set subtraction
+
+`(setminus s1 s2)` takes two lists representing sets and
+returns a list representing the subtraction of `s2` from `s1` (i.e., returns a list
+without duplicates consisting of all elements of `s1` that are not in
+`s2`).
+
+``` ocaml
+fun setminus s1 s2 =
+    case s1 of
+        [] => []
+      | (h::t) => if isIn h s2 then setminus t s2 else h::(setminus t s2);
+```
+
+Note that since we are using lists to represent sets we could in principle build
+sets with duplicated elements (by just declaring such a list). If we were
+however to only manipulate sets build via the `union` operation we would have
+the guarantee that no set is a list with duplicate elements.
+
+- Tests
+
+``` ocaml
+val s1 = ["x1", "x2"];
+isIn "x1" s1;
+isIn "y" s1;
+
+val s2 = ["x2", "x3"];
+
+union s1 s2;
+setminus s1 s2;
+```
+
+### Computing the set of free variables
+
+The free variables of an expression are all the variables that are
+ *not* bound in the given state.
+
+``` ocaml
+fun isInState n [] = false
+    | isInState n ((k:string,_)::t) = n = k orelse isInState n t;
+
+fun freeVars (e : aexpr) (s : (string * aexpr)) : string list =
+    case e of
+        IConst _ => []
+      | (Var v) s => if isInState v s then [] else [v]
+      | (Plus(e1, e2)) s => union (freeVars e1 s) (freeVars e2 s)
+      | (Minus(e1, e2)) s => union (freeVars e1 s) (freeVars e2 s)
+      | (Ite(_,e1, e2)) s => union (freeVars e1 s) (freeVars e2 s);
+
+e;
+freeVars e [];
+freeVars e ([("x", IConst 0)] @ s);
+
+```
+
+### Checking closedness
+
+We can now define the method that checks whether an expression is closed:
+
+``` ocaml
+fun closed e s = (freeVars e s = []);
+closed e;
+
+```
+
+We can now define a method that only evaluates closed expressions
+
+``` ocaml
+exception NonClosed;
+
+fun run e s =
+    if closed e s then
+        eval e s
+    else
+        raise NonClosed;
+
+run e [];
+run e ([("x", IConst 0)] @ s);
+```

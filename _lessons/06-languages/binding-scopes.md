@@ -21,12 +21,9 @@ title: Bindings and scopes
   - Extending the basic expression language with let binders.
   - Evaluating expressions with let binders.
   - Static and dynamic scoping
+  - Checking closedness indepedently of initial state
   - Examples.
-
-- Finite sets in SML
-  - Implementing finite sets using lists.
-  - Free and bound variables.
-  - Closed expressions.
+  - Generalizing the expression language to use Booleans.
 
 ## Binding symbols to values in SML
 
@@ -43,12 +40,11 @@ b;
 
 ## Extending our expression language to build states.
 
-We will also use a single datatype containing constants of
-different values and make primitive operations on these values
-interpretable according to the primitive. For example:
+To simplify the expression language we will use a single datatype with integer
+expressions and primitive operations on these values interpretable according to
+the primitive. For example:
 
 - `3 + 5` would be `Prim("+", IConst 3, IConst 5)`
-- `x and y` would be `Prim("and", Var "x", Var "y")`
 
 Thus the expression language would be:
 
@@ -209,8 +205,9 @@ eval e6 [];
 
 ## Evaluating expressions with free variables
 
-To evaluate an expression with free variables we need to start the evaluation
-function with a valuation to these variables.
+To evaluate an expression with variables not bound within the expression we need
+to start the evaluation function with a valuation to these variables (in the
+initial state).
 
 ``` ocaml
 val e7 = Let("y", IConst 49, Prim2("*", Var "x", Prim2("+", IConst 3, Var "y")));
@@ -219,71 +216,21 @@ eval e7 [("x", IConst 0)];
 eval e7 [("x", IConst 1)];
 ```
 
+Previously we checked whether expressions were closed according to the initial
+state. We will now change both how we compute free variables and how we check
+closedness, so that we do not need to rely on the initial state, which is not a
+good practice.
+
 ## Checking whether expressions are closed (no free variables)
 
-We will now determine whether expressions are *closed*, i.e., they do not
-contain free variables. Only closed expressions can be evaluated without an
-initial valuation.
+We now define free variables as variables not bound within the expression. And a
+closed expression as one without free variables.
 
-To do this we will first define set operations in SML, then how to compute the
-set of free variables of an expression, then write a function that checks
-whether that set is empty, in which case the expression will be closed.
-
-### Finite sets in SML
-
-A set can be implemented as a list with no duplicate elements.
-
-- Set membership
-`isIn x s is true iff x occurs in s`
-``` ocaml
-(*  *)
-fun isIn x s =
-    case s of
-        [] => false
-      | (h::t) => if x = h then true else isIn x t;
-```
-- Set union
-
-`(union s1 s2)` takes two lists representing sets and yields a list representing
-their union, i.e., a list without duplicates consisting of all the elements of
-`s1` and all the elements of `s2`.
-
-``` ocaml
-fun union s1 s2 =
-    case s1 of
-        [] => s2
-      | (h::t) => if isIn h s2 then union t s2 else union t (h::s2);
-```
-- Set difference
-`(diff s1 s2)` takes two lists representing sets and
-returns a list representing their difference (i.e., returns a list
-without duplicates consisting of all elements of `s1` that are not in
-`s2`).
-
-``` ocaml
-fun diff s1 s2 =
-    case s1 of
-        [] => []
-      | (h::t) => if isIn h s2 then diff t s2 else h::(diff t s2);
-```
-
-- Tests
-
-``` ocaml
-val s1 = ["x1", "x2"];
-isIn "x1" s1;
-isIn "y" s1;
-
-val s2 = ["x2", "x3"];
-
-union s1 s2;
-diff s1 s2;
-```
+As before we will use finite sets defined as lists as helpers for computing free
+variables. But now we take into account the let binder in the expression
+language.
 
 ### Computing the set of free variables
-
-The free variables of an expression are all the variables that are
- *not* bound.
 
 ``` ocaml
 fun freeVars e : string list =
@@ -337,6 +284,13 @@ run e7;
 ```
 
 ## Generalizing the expression language for Booleans
+
+We now generalize the ASTs of the expression language to allow Boolean
+constants, while maintaining primitives, so that we can have for example
+`x and y` as `Prim("and", Var "x", Var "y")`.
+
+We also reintroduce `Ite`.
+
 
 ``` ocaml
 datatype expr =

@@ -20,3 +20,11 @@ title: Topic 02 - Syntax and semantics of programming languages
 27 Apr
 : [**Closures**]({{ site.baseurl }}{% link _lessons/06-languages/closures.md %})
   : [Old recorded lecture](https://www.youtube.com/playlist?list=PLeIbBi3CwMZwsNyF3Pt9n-sc6U_m_7Qia)
+
+02 May
+: [**Formal semantics**]({{ site.baseurl }}{% link _lessons/06-languages/formal-semantics.md %}): Operational semantics
+  : [Old recorded lecture](https://youtube.com/playlist?list=PLeIbBi3CwMZziVG93gcNT__X_xmmtM8ir)
+
+04 May
+: [**Formal semantics**]({{ site.baseurl }}{% link _lessons/06-languages/formal-semantics.md %}): Lambda calculus
+  : [Old recorded lecture](https://youtube.com/playlist?list=PLeIbBi3CwMZxFVZX1yGTiGiJO7gWd4YJ5)

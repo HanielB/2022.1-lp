@@ -1,0 +1,73 @@
+digraph proof {
+  rankdir="BT";
+  node [shape=record];
+  0 [ label = "{(not (and (= p0 (ite c e1 e2)) (= p1 (ite (not c) e2 e1)) (not (= p0 p1))))|SCOPE :args [ (= p0 (ite c e1 e2)), (= p1 (ite (not c) e2 e1)), (not (= p0 p1)) ]}", comment = "{\"subProofQty\":22}" ];
+  1 [ label = "{false|EQ_RESOLVE}", comment = "{\"subProofQty\":21}" ];
+  2 [ label = "{(not (= p0 p1))|ASSUME}", comment = "{\"subProofQty\":1}" ];
+  2 -> 1;
+  3 [ label = "{(= (not (= p0 p1)) false)|TRANS}", comment = "{\"subProofQty\":19}" ];
+  4 [ label = "{(= (not (= p0 p1)) (not (= (ite c e1 e2) (ite (not c) e2 e1))))|CONG :args [ not ]}", comment = "{\"subProofQty\":10}" ];
+  5 [ label = "{(= (= p0 p1) (= (ite c e1 e2) (ite (not c) e2 e1)))|CONG :args [ = ]}", comment = "{\"subProofQty\":9}" ];
+  6 [ label = "{(= p0 (ite c e1 e2))|AND_ELIM :args [ 1 ]}", comment = "{\"subProofQty\":4}" ];
+  7 [ label = "{(and (= p1 (ite (not c) e2 e1)) (= p0 (ite c e1 e2)))|AND_INTRO}", comment = "{\"subProofQty\":3}" ];
+  8 [ label = "{(= p1 (ite (not c) e2 e1))|ASSUME}", comment = "{\"subProofQty\":1}" ];
+  8 -> 7;
+  9 [ label = "{(= p0 (ite c e1 e2))|ASSUME}", comment = "{\"subProofQty\":1}" ];
+  9 -> 7;
+  7 -> 6;
+  6 -> 5;
+  10 [ label = "{(= p1 (ite (not c) e2 e1))|AND_ELIM :args [ 0 ]}", comment = "{\"subProofQty\":4}" ];
+  11 [ label = "{(and (= p1 (ite (not c) e2 e1)) (= p0 (ite c e1 e2)))|AND_INTRO}", comment = "{\"subProofQty\":3}" ];
+  12 [ label = "{(= p1 (ite (not c) e2 e1))|ASSUME}", comment = "{\"subProofQty\":1}" ];
+  12 -> 11;
+  13 [ label = "{(= p0 (ite c e1 e2))|ASSUME}", comment = "{\"subProofQty\":1}" ];
+  13 -> 11;
+  11 -> 10;
+  10 -> 5;
+  5 -> 4;
+  4 -> 3;
+  14 [ label = "{(= (not (= (ite c e1 e2) (ite (not c) e2 e1))) false)|TRANS}", comment = "{\"subProofQty\":8}" ];
+  15 [ label = "{(= (not (= (ite c e1 e2) (ite (not c) e2 e1))) (not true))|CONG :args [ not ]}", comment = "{\"subProofQty\":6}" ];
+  16 [ label = "{(= (= (ite c e1 e2) (ite (not c) e2 e1)) true)|TRANS}", comment = "{\"subProofQty\":5}" ];
+  17 [ label = "{(= (= (ite c e1 e2) (ite (not c) e2 e1)) (= (ite c e1 e2) (ite c e1 e2)))|CONG :args [ = ]}", comment = "{\"subProofQty\":3}" ];
+  18 [ label = "{(= (ite c e1 e2) (ite c e1 e2))|REFL}", comment = "{\"subProofQty\":1}" ];
+  18 -> 17;
+  19 [ label = "{(= (ite (not c) e2 e1) (ite c e1 e2))|THEORY_REWRITE :args [ BOOL ]}", comment = "{\"subProofQty\":1}" ];
+  19 -> 17;
+  17 -> 16;
+  20 [ label = "{(= (= (ite c e1 e2) (ite c e1 e2)) true)|THEORY_REWRITE :args [ ARITH ]}", comment = "{\"subProofQty\":1}" ];
+  20 -> 16;
+  16 -> 15;
+  15 -> 14;
+  21 [ label = "{(= (not true) false)|THEORY_REWRITE :args [ BOOL ]}", comment = "{\"subProofQty\":1}" ];
+  21 -> 14;
+  14 -> 3;
+  3 -> 1;
+  1 -> 0;
+
+  subgraph cluster_SAT {
+    label="SAT"
+    bgcolor="purple"
+
+  };
+  subgraph cluster_CNF {
+    label="CNF"
+    bgcolor="yellow"
+
+  };
+  subgraph cluster_TL {
+    label="TL"
+    bgcolor="green"
+
+  };
+  subgraph cluster_PP {
+    label="PP"
+    bgcolor="brown"
+    1 3 4 5 6 7 10 11 14 15 16 17 18 19 20 21
+  };
+  subgraph cluster_IN {
+    label="IN"
+    bgcolor="blue"
+    2 8 9 12 13
+  };
+}

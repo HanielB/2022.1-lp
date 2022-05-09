@@ -247,6 +247,62 @@ P1 -> stuck iff P2 -> stuck
 ```
   for some notion of "stuck".
 
+## Program equivalence as SMT
+
+### SMT and cvc5
+
+[Satisfiability Modulo Theories (SMT)](https://en.wikipedia.org/wiki/Satisfiability_Modulo_Theories) is the satisfiability problem in first-order logic modulo a set of background theories. Thus one asks whether a given formula is satisfiable according to a fixed interpretation of some symbols (for example that the symbol `+` in a formula refers to arithmetic addition).
+
+The [cvc5 SMT solver](https://cvc5.github.io/) is a state-of-the-art solver for SMT problems. It can attempt to solve any problem formulated in SMT. The system accepts [SMT-LIB](https://smtlib.cs.uiowa.edu/) as an input format as well as multiple APIs (in [Python](https://cvc5.github.io/docs/cvc5-1.0.0/api/python/python.html), [C++](https://cvc5.github.io/docs/cvc5-1.0.0/api/cpp/cpp.html), and [Java](https://cvc5.github.io/docs/cvc5-1.0.0/api/java/java.html)).
+
+### Program equivalence
+
+To install `cvc5` and use it in Python you can do (with an up to date Python installation):
+
+``` shell
+pip install cvc5
+```
+
+To check in SMT the equivalence of two programs we need to encode the language of these programs into the SMT language. SMT solvers have builtin support for Boolean and Integer arithmetic, as well as if-then-else and variable assignment. Therefore we can directly encode our expression language into it.
+
+Given our equivalence problem
+
+```
+Ite(c,e1,e2) = Ite(Not(c),e2,e1)
+```
+
+we need to first declare introduce variables to represent `c`, `e1` and `e2`.
+
+
+``` python
+from cvc5.pythonic import *
+
+if __name__ == '__main__':
+
+    c = Bool('c')
+
+    e1, e2 = Ints('e1 e2')
+
+    p0 = If(c, e1, e2)
+    p1 = If(Not(c), e2, e1)
+
+    solve(p0 != p1)
+```
+
+``` smt
+(set-logic QF_UFLIA)
+
+(declare-const c Bool)
+(declare-const e1 Int)
+(declare-const e2 Int)
+
+(define-fun p0 () Int (ite c e1 e2))
+(define-fun p1 () Int (ite (not c) e2 e1))
+
+(assert (not (= p0 p1)))
+
+(check-sat)
+```
 
 ## The Lambda Calculus
 

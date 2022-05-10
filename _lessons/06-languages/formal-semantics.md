@@ -271,16 +271,50 @@ Given our equivalence problem
 Ite(c,e1,e2) = Ite(Not(c),e2,e1)
 ```
 
-we need to first declare introduce variables to represent `c`, `e1` and `e2`.
+we need to first introduce variables to represent `c`, `e1` and `e2`. Since the first is a Boolean and the last two are integers, we use the respective builtin types in cvc5:
 
+``` python
+c = Bool('c')
+e1, e2 = Ints('e1 e2')
+```
+
+Next we create the programs which we want to test the equivalence to, using the cvc5 builtin operator for if-then-else (`If`) and the bultin operator for Boolean negation (`Not`):
+
+``` python
+p0 = If(c, e1, e2)
+p1 = If(Not(c), e2, e1)
+```
+
+Finally we can ask the solver `p0` and `p1` are equivalent. For them to be
+equivalent it must be the case that for *every* value of `c`, `e1` and `e2`, it
+is true that `p0` and `p1` are equal. This means that it is *valid* that `p0`
+and `p1` are equal.
+
+There is a duality between *validity* (a statement is always true) and
+*satisfiability* (a statement can be true). That is that a formula `φ` is valid
+if and only if `¬φ` is unsatisfiable, i.e., a formula is always true if it
+cannot be the case that its negation can be true.
+
+Since an SMT solver answers satisfiability queries, the equivalence of `p0` and
+`p1`, which requires the validity that they are equal, is phrased as the
+satisfiability problem of whether they are *disequal*. If that is unsatisfiable,
+then `p0` and `p1` are equivalent.
+
+The cvc5 python API provides a `solve` command that accepts satisfiability queries:
+
+``` python
+solve(p0 != p1)
+```
+
+The answer will be "no solution", which says that the query is unsatisfiable.
+
+The complete python program is:
 
 ``` python
 from cvc5.pythonic import *
 
 if __name__ == '__main__':
-
     c = Bool('c')
-
     e1, e2 = Ints('e1 e2')
 
     p0 = If(c, e1, e2)
@@ -288,6 +322,8 @@ if __name__ == '__main__':
 
     solve(p0 != p1)
 ```
+
+The above formulation can be written as well in SMT-LIB, with the following syntax:
 
 ``` smt
 (set-logic QF_UFLIA)
@@ -303,6 +339,11 @@ if __name__ == '__main__':
 
 (check-sat)
 ```
+
+A file with the above content can be passed to a binary of cvc5 (downloads
+available [here](https://cvc5.github.io/downloads.html)), which will yield the
+answer `unsat` to symbolize that it is an unsatisfiable problem.
+
 
 ## The Lambda Calculus
 

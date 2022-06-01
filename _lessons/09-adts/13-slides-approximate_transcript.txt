@@ -1,0 +1,127 @@
+- Title
+
+  - Olá, pessoal. Vamos começar mais uma aula da nossa disciplina de linguages
+    de programação. O assunto da aula de hoje é orientação a objetos, que é de
+    certa forma uma continuação natural da aula passada, sobre tipos abstratos
+    do dados.
+
+    Vamos ver os princípios por trás de de orientação a objetos e depois
+    explorar algumas dessas características com exemplos em Python e C++, duas
+    linguagens que permitem programação orientada a objetos.
+
+- OO
+
+  - Então primeiramento, o que são objetos? Uma forma comum de definir objetos é
+
+    "little bundles of data that know how to do things to themselves"
+
+  - Como vimos anteriormente, esta é uma definição que se adequa diretamente a
+    tipos abstratos de dados, com seus dados internos e operações para
+    modificá-los.
+
+  - Assim podemos ver objetos como valores de tipos abstratos de dados que
+    interagem entre si através das operações definidas para estes tipos, seus
+    métodos.
+
+    As chamadas desses métodos definem, de certa forma, "trocas de mensagens"
+    entre os objetos, modificando seus estados locais e assim criando um
+    comportamento global.
+
+  - Como nós vimos com o exemplo da linguagem python, uma forma de se definir
+    tipos abstratos de dados é através de classes.
+
+    Classes definem um escopo no qual certos nomes estão disponíveis, o que
+    chamamos de namespace. Os dados e operações de uma classes estão disponíveis
+    no namespace definido por ela.
+
+    Assum, uma forma comum de definir objetos é através da especificação de
+    tipos abstratos de dados com classes e da instanciação dessas classes em
+    objetos, ou seja, valores do tipo definido pela classe. Instâncias de uma
+    classe tem acesso ao namespace daquela classe.
+
+- Principais elementos
+
+  - Herança e subtipagem
+
+    - "Definição de um tipo abstrato a partir de outro"
+
+      Então agora falando sobre os principais elementos de programação orientada
+      a objetos, vamos abordard primeiramente herança e a relação de subtipagem
+      que ela gera.
+
+      Herança é um mecanismo de reaproveitamento, em que definimos um novo tipo
+      que estende um anterior, "herdando" seus dados e operações.
+
+      Desta maneira se define um novo tipo que é um _subtipo_ daquele que ele
+      estende.
+
+    - "Liskov's substitution principle"
+
+      Essa relação de subtipagem leva ao que é conhecido como o princípio da
+      substituição de Liskov, em homenagem à Barbara Liskov, que mencionamos na
+      aula passada.
+
+      Este princípio estabelece que dados dois tipos S e T, com S sendo subtipo
+      de T, em qualquer situação em que um objeto do tipo T seria usado pode-se
+      substituí-lo por um objeto do tipo S, ao mesmo tempo em que se mantém o
+      mesmo comportamento do programa.
+
+      Note que como S é subtipo de T, todas as operações de T são definidas em
+      S, então qualquer uso de objetos de T, necessariamente, seria com
+      operações também definidas em S.
+
+  - Polimorfismo
+
+    - Um conceito muito importante em orientação a objetos é o de
+      polimorfismo. Aqui vamos destacar dois tipos, o de sobrecarga e o de
+      sobrescrita.
+
+      Como vimos anteriormente, esse tipo de polimorfismo se caracteriza pela
+      redefinição de operações com tipos diferentes. Por exemplo, redefinir a
+      operação de soma de inteiros para a soma de reais.
+
+      Em orientação a objetos é comum, ao definir as operações em um tipo, ter
+      diferentes versões de uma mesma operação para diferentes conjuntos ou
+      tipos de parâmetros.
+
+    - Outro tipo comum de polimorfismo usado em orientação a objetos é o de
+      sobrescrita, em que ao definir um tipo que estende outro, via herança, se
+      sobrescrever alguns dos métodos herdados.
+
+    - Method Dispatch
+
+      Esses usos de polimorfismo levam ao problema de se determinar, quando se
+      tem uma dada chamada de um método de um objeto, qual implementação deve
+      ser utilizada. A isso se dá o nome de "method dispatch".
+
+      As duas principais formas de method dispath são a estática, feita em tempo
+      de compilação, e a dinâmica, feita em tempo de execução.
+
+      Por exemplo, pode-se fazer method dispatch de forma estática para casos de
+      polimorfismo de sobrecarga, analisando os parâmetros na chamada dos
+      métodos e seus tipos.
+
+      Enquanto que method dispatch dinâmico pode ser feito para se determinar,
+      dado um método sobrescrito em um subtipo, qual implementação executar
+      dependendo do objeto dado ser do supertipo ou do subtipo.
+
+  - Encapsulamento
+
+    Por fim, outro conceito fundamental em orientação a objetos, como vimos
+    também ao falar de tipos abstratos de dados, é o de encapsulamento, que
+    captura a ideia de que o estado local de um objeto só pode ser modificado
+    pelas próprias operações de um objeto.
+
+    Uma funcionalidade comum de linguagens orientadas a objeto é permitir
+    definir diferentes níves de acesso ao estado de objetos, como partes
+    privadas, que só poderão ser acessadas pelo próprio objeto, e partes
+    públicas, acessíveis a qualquer outro elemento do programa.
+
+    Diga-se de passagem um mal comum em programas orientados objetos é definir
+    getters e setters, para se obter e se atribuir valores ao estado local,
+    respectivamente, que não possuem qualquer nível de abstração, apenas
+    diretamente produzem o valor local ou diretamente atribuem o valor dado ao
+    valor local.
+
+    Nesses casos em que não há qualquer abstração do estado interno do objeto
+    não há qualquer motivo para definí-lo como privado, como restrito.

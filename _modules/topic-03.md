@@ -12,4 +12,8 @@ title: Topic 03 - Implementing programming languages
 
 25, 30 May
 : [**Memory management**]({{ site.baseurl }}{% link _lessons/08-memory/memory.md %})
-  : [Pre-recorded lectures](https://www.youtube.com/playlist?list=PLeIbBi3CwMZxEik6SHGVkc1x1VtTJBsaR)
+  : [Old recorded lectures](https://www.youtube.com/playlist?list=PLeIbBi3CwMZxEik6SHGVkc1x1VtTJBsaR)
+
+12 Jan
+: [**Abstraction and Abstract Data Types**]({{ site.baseurl }}{% link _lessons/09-adts/adts.md %})
+  : [Old recorded lecture](https://www.youtube.com/playlist?list=PLeIbBi3CwMZzTwPtz2Vm4SoaB_aHaQMAU)

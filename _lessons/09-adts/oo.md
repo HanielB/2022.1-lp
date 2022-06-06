@@ -59,7 +59,7 @@ linguagens que permitem programação orientada a objetos.
   chamamos de namespace. Os dados e operações de uma classes estão disponíveis
   no namespace definido por ela.
 
-  Assum, uma forma comum de definir objetos é através da especificação de
+  Assim, uma forma comum de definir objetos é através da especificação de
   tipos abstratos de dados com classes e da instanciação dessas classes em
   objetos, ou seja, valores do tipo definido pela classe. Instâncias de uma
   classe tem acesso ao namespace daquela classe.
@@ -101,7 +101,7 @@ operações também definidas em S.
   polimorfismo. Aqui vamos destacar dois tipos, o de sobrecarga e o de
   sobrescrita.
 
-  Como vimos anteriormente, esse tipo de polimorfismo se caracteriza pela
+  Como vimos anteriormente, polimorfismo de sobrecarga se caracteriza pela
   redefinição de operações com tipos diferentes. Por exemplo, redefinir a
   operação de soma de inteiros para a soma de reais.
 

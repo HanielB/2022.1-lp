@@ -1,35 +1,45 @@
 #include <stdlib.h>
 
-#define INT_BITS 32
+#define CAPACITY 2
 
 #include "set.h"
 
-void new(set* s, unsigned capacity)
+void new(set* s)
 {
-  s->vector = (unsigned*)malloc((1 + (capacity / INT_BITS)) * sizeof(unsigned));
-  s->size = capacity;
+  s->vector = (unsigned*)malloc(CAPACITY * sizeof(unsigned));
+  s->size = 0;
+  s->capacity = CAPACITY;
 }
 
 void add(set* s, unsigned e)
 {
-  unsigned index = e / INT_BITS;
-  unsigned offset = e % INT_BITS;
-  unsigned bit = 1 << offset;
-  s->vector[index] |= bit;
+  if (s->size == s->capacity) {
+    s->capacity *= 2;
+    s->vector = realloc(s->vector, s->capacity * sizeof(int));
+  }
+  s->vector[s->size++] = e;
 }
 
 void del(set* s, unsigned e)
 {
-  unsigned index = e / INT_BITS;
-  unsigned offset = e % INT_BITS;
-  unsigned bit = 1 << offset;
-  s->vector[index] &= ~bit;
+  unsigned deleted = s->size;
+  for (unsigned i = 0; i < s->size; ++i)
+    if (s->vector[i] == e)
+    {
+      deleted = i;
+      break;
+    }
+  if (deleted == s->size)
+    return;
+  for (unsigned i = deleted; i < s->size - 1; ++i)
+    s->vector[i] = s->vector[i+1];
+  s->size--;
 }
 
 int contains(set* s, unsigned e)
 {
-  unsigned index = e / INT_BITS;
-  unsigned offset = e % INT_BITS;
-  unsigned bit = 1 << offset;
-  return s->vector[index] & bit;
+  for (unsigned i = 0; i < s->size; ++i)
+    if (s->vector[i] == e)
+      return 1;
+  return 0;
 }

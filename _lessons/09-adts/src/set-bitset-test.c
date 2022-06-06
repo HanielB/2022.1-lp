@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-#include "set.h"
+#include "set-bitset.h"
 
 int main()
 {
@@ -21,5 +21,10 @@ int main()
   printf("Delete 5\n");
   del(&s, 5);
   printf("Contains %d? %d\n", 5, contains(&s, 5));
-  printf("Elements = %d\n", s.size);
+  printf("Size = %d\n", s.size);
+  printf("Value at 0 = %d\n", s.vector[0]);
+  s.vector[0] = 16;
+  printf("Contains %d? %d\n", 2, contains(&s, 2));
+  printf("Contains %d? %d\n", 3, contains(&s, 3));
+  printf("Contains %d? %d\n", 4, contains(&s, 4));
 }

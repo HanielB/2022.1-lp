@@ -2,7 +2,6 @@ typedef struct
 {
   unsigned* vector;
   unsigned size;
-  unsigned capacity;
 } set;
 
 

@@ -24,4 +24,8 @@ title: Topic 03 - Implementing programming languages
 
 08 Jun
 : [**Error Handling**]({{ site.baseurl }}{% link _lessons/10-error/error-handling.md %})
-  : [Pre-recorded lectures](https://www.youtube.com/playlist?list=PLeIbBi3CwMZyTxht1aVqX2GC10Ol8qTVG)
+  : [Old recorded lectures](https://www.youtube.com/playlist?list=PLeIbBi3CwMZyTxht1aVqX2GC10Ol8qTVG)
+
+13, 15 Jun
+: [**Parameter passing**]({{ site.baseurl }}{% link _lessons/11-parameters/parameters.md %})
+  : [Old recorded lectures](https://www.youtube.com/playlist?list=PLeIbBi3CwMZxCfI53xXJQdDkCF0YbgGbm)

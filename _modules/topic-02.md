@@ -28,8 +28,11 @@ title: Topic 02 - Syntax and semantics of programming languages
 : [**Formal semantics**]({{ site.baseurl }}{% link _lessons/06-languages/formal-semantics.md %}): Lambda calculus
   : [Old recorded lecture](https://youtube.com/playlist?list=PLeIbBi3CwMZxFVZX1yGTiGiJO7gWd4YJ5)
 
-16 May
+11 May
 : **Formal languages**
+
+16 May
+: Tutorial for Project 1
 
 18 May
 : **Exam 1**

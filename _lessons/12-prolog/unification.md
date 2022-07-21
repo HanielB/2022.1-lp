@@ -144,7 +144,7 @@ clauses in the following way:
 When writing a query in Prolog we want to know if the facts and the rules of
 your program allow that query to hold, i.e., whether the facts `F` the rules `R`
 together entail the query `Q`. This can be written as a logical formula `(F ∧ R)
-⇒ Q`, which is equivalent to `(F ∧ R) v ~Q ⇒ false`. Showing that a series of
+⇒ Q`, which is equivalent to `F ∧ R ∧ ~Q ⇒ false`. Showing that a series of
 formulas together imply false is called a *refutation proof*.
 
 Using resolution, facts, rules and queries, a Prolog computation works in the
